@@ -54,11 +54,11 @@ export default function Login() {
               <Label htmlFor="password">كلمة المرور</Label>
               <Input id="password" data-testid="login-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5 rounded-xl" placeholder="••••••••" />
             </div>
-            <Button type="submit" data-testid="login-submit" disabled={loading} className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 h-11">
+            <Button type="submit" data-testid="login-submit" disabled={loading} className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 h-11">
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "دخول"}
             </Button>
           </form>
-          <p className="mt-6 text-center text-sm text-slate-500">ليس لديك حساب؟ <Link to="/register" data-testid="go-register-link" className="text-blue-600 font-medium">أنشئ حساباً</Link></p>
+          <p className="mt-6 text-center text-sm text-slate-500">ليس لديك حساب؟ <Link to="/register" data-testid="go-register-link" className="text-emerald-600 font-medium">أنشئ حساباً</Link></p>
         </div>
       </div>
     </div>

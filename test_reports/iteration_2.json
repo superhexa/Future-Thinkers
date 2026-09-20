@@ -1,0 +1,44 @@
+{
+  "summary": "Iteration 2 testing: coding judge, innovation projects, debates, PDF certificates, book upload (Telegram mirror best-effort), WebSockets, and responsiveness. Added new pytest file test_iter2_features.py (10 tests) and re-ran previous suite. New tests: 10/10 pass. Previous suite: 30/31 pass (1 flaky chess turn assertion due to random pairing color, pre-existing). Frontend Playwright verified: /clubs/programming shows 4 problems; opening 'مجموع رقمين' with code-editor + run-code-btn returns 'مقبول ✓ نجح 3 من 3 اختبار' — real subprocess judge works via public URL. /clubs/innovation shows new-project-btn + vote-project buttons. /clubs/debate shows vote-a-*, vote-b-*, new-debate-btn. Green/emerald theme applied on landing hero, buttons and footer gradient. WebSockets close 1008 without token (verified via websockets client). Browser WS to /api/ws/notifications is failing to upgrade in the k8s ingress (best-effort per spec) — polling fallback keeps notifications working (unread count '13' rendered on navbar).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "wss /api/ws/notifications (browser)", "issue": "WebSocket upgrade fails in the k8s ingress from the browser (closes before established). Direct wss client from server works. Polling fallback covers UX, but WS should be verified in production ingress config."},
+      {"endpoint": "/api/chess/games/{id}/move", "issue": "Flaky in existing test_chess_quick_match — colour randomization occasionally returns 'ليس دورك' on first move. Test logic uses g.my_color mapping but response 'my_color' may reflect requester after pairing before FEN commit. Pre-existing from iter 1 but only shows intermittently."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin (Admin dashboard)", "issues": ["Horizontal overflow at mobile 390px (scrollWidth=934) and tablet 768px (scrollWidth=942). Sidebar does not stack; tables are not wrapped in horizontally scrollable containers. Spec explicitly asked 'sidebar stacks, tables scroll' at mobile — this is unfulfilled."]},
+      {"screen": "Global console", "issues": ["Repeated 404 for a static asset on several pages (favicon/cover placeholder); pre-existing from iter1, non-blocking."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter2_features.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/iter2_results.xml"
+  ],
+  "action_items": [
+    "Make Admin dashboard responsive: stack the sidebar into a mobile drawer/top-nav and wrap tables in overflow-x-auto containers so viewport width is not exceeded on 390px and 768px.",
+    "Verify/enable WebSocket upgrade in the production ingress OR document that /api/ws/* is optional and rely on polling; currently browser WS never establishes.",
+    "Fix or make deterministic the test_chess_quick_match colour assumption (backend chess pairing race) to remove flakiness."
+  ],
+  "critical_code_review_comments": [
+    "coding_routes._run passes env={'PATH': '/usr/bin:/bin'} which strips PYTHONHOME/PATH used by user's python — works because python3 is at /usr/bin/python3, but if venv-only python is used in prod this will break. Consider whitelisting minimal env from os.environ.",
+    "coding_routes.submit stops on first failing test — cannot report partial results (passed<total for wrong_answer). Consider evaluating all tests to give better UX feedback.",
+    "showcase_routes.vote_project awards XP to project author on every re-vote toggle from other users — including when a user un-votes then re-votes, they can farm XP for the author. Add rate limit or one-time-per-voter XP award.",
+    "cert_routes competition_certificate has no min score / rank gate — anyone who submits (even 0%) gets a 'شهادة تقدير'. Consider restricting to top-N or min-score.",
+    "cert_routes has no in-memory PDF cache; each request rebuilds font-heavy PDF. Consider caching Amiri font registration state is fine but response could be cached by user+id.",
+    "server.py CORS_ORIGINS wildcard fallback with allow_credentials=True (carried from iter1) — still present."
+  ],
+  "updated_files": ["/app/backend/tests/test_iter2_features.py"],
+  "success_rate": {"backend": "100% (10/10 new iter2, 30/31 regression — 1 pre-existing flaky)", "frontend": "95% (all iter2 UI flows verified; admin dashboard responsiveness fails)"},
+  "test_credentials": "Admin djcnnddicje@gmail.com / Admin@12345 (super_admin). Fresh students created per test via /api/auth/register.",
+  "seed_data_creation": "New TEST_ prefixed data via iter2 tests: 1 project, 1 debate + 1 argument, 1 competition + 1 event + registrations/submissions to trigger certs, 1 uploaded book.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend URL is REACT_APP_BACKEND_URL. Run: pytest /app/backend/tests/ -v. iter2 test file uses websockets sync client to verify 1008 close without token. Browser WS upgrade does NOT work through ingress (best-effort per spec). Admin dashboard at /admin has horizontal overflow at mobile 390 (sw=934) and tablet 768 (sw=942) — verify after main agent fixes.",
+  "rca of the issue": "Admin dashboard overflow: layout uses a fixed-width sidebar + wide data tables without responsive breakpoints. At <=768px the sidebar should collapse to a top drawer and tables should be wrapped in overflow-x containers. WebSocket browser upgrade: k8s ingress in preview env likely lacks WS upgrade headers/timeout config; server-side wss works when called directly, and app already implements polling fallback so functional impact is limited to real-time push."
+}

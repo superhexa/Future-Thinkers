@@ -40,7 +40,8 @@ async def vote_project(pid: str, user: dict = Depends(get_current_user)):
         await db.projects.update_one({"_id": p["_id"]}, {"$pull": {"votes": user["id"]}, "$inc": {"votes_count": -1}})
         return {"voted": False}
     await db.projects.update_one({"_id": p["_id"]}, {"$addToSet": {"votes": user["id"]}, "$inc": {"votes_count": 1}})
-    if p["author_id"] != user["id"]:
+    if p["author_id"] != user["id"] and user["id"] not in p.get("xp_voters", []):
+        await db.projects.update_one({"_id": p["_id"]}, {"$addToSet": {"xp_voters": user["id"]}})
         await award_xp(p["author_id"], 3, "تصويت لمشروعك", pid)
     return {"voted": True}
 

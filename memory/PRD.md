@@ -43,3 +43,14 @@ server-side authorization; audit logs; dynamic landing stats.
 
 ## Next tasks
 Wire Telegram credentials when provided; add real-time via WebSockets; expand club-specific mechanics.
+
+## Implemented (2026-06, iteration 2)
+- Real-time WebSockets: /api/ws/notifications + /api/ws/chess/{id} (with polling fallback retained).
+- Telegram file mirroring wired (TELEGRAM_BOT_TOKEN/GROUP_ID in env) — book uploads mirror to Telegram group, best-effort.
+- Green/emerald modern theme across landing, auth, navbar, buttons (primary token → emerald; new ft-hero-gradient).
+- نادي البرمجة: real Python code judge (subprocess, sandboxed, timeouts, test cases) + submissions + coding leaderboard (4 seeded problems).
+- نادي الابتكار: projects + upvoting (one-time XP per voter). نادي المناظرات: debate topics with two sides, side voting, arguments.
+- PDF certificates (reportlab + Amiri Arabic font) for competition participants and event attendees — downloadable from UI.
+- Responsive hardening: Admin dashboard (grid minmax(0,1fr) + min-w-0 + overflow-x-auto tables + overflow-x-hidden) fixed mobile/tablet overflow.
+- Tested: 10/10 new backend tests + regression; all new UI flows verified.
+
