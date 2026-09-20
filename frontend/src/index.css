@@ -35,19 +35,19 @@ h1, h2, h3, h4, .font-head { font-family: 'Readex Pro', sans-serif; }
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 221 83% 53%;
+    --primary: 160 84% 30%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
+    --secondary: 152 30% 96%;
+    --secondary-foreground: 158 64% 20%;
+    --muted: 152 24% 96%;
     --muted-foreground: 215 16% 47%;
     --accent: 152 76% 32%;
     --accent-foreground: 0 0% 100%;
     --destructive: 349 89% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --border: 152 20% 90%;
+    --input: 152 20% 90%;
+    --ring: 160 84% 30%;
     --radius: 0.9rem;
     --chart-1: 221 83% 53%;
     --chart-2: 152 76% 32%;
@@ -68,7 +68,8 @@ h1, h2, h3, h4, .font-head { font-family: 'Readex Pro', sans-serif; }
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-.ft-navy-gradient { background: linear-gradient(135deg, #0A192F 0%, #0f2547 55%, #0A192F 100%); }
+.ft-navy-gradient { background: linear-gradient(135deg, #052e26 0%, #064e3b 55%, #043a2e 100%); }
+.ft-hero-gradient { background: linear-gradient(135deg, #04211d 0%, #065f46 45%, #0d9488 100%); }
 .ft-shadow { box-shadow: 0 4px 24px -8px rgba(15, 23, 42, 0.12); }
 .ft-shadow-lg { box-shadow: 0 20px 48px -16px rgba(15, 23, 42, 0.22); }
 
@@ -81,7 +82,7 @@ h1, h2, h3, h4, .font-head { font-family: 'Readex Pro', sans-serif; }
 @keyframes ft-float { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-10px);} }
 .animate-float { animation: ft-float 6s ease-in-out infinite; }
 
-::selection { background: #2563EB; color: #fff; }
+::selection { background: #059669; color: #fff; }
 
 .grain::before {
   content: ""; position: absolute; inset: 0; opacity: .04; pointer-events: none;

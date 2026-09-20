@@ -209,7 +209,25 @@ async def seed_all():
             "streak": 0, "chess_rating": 1200, "created_at": now_iso(),
         })
 
-    # sample approved books (dev). pdf via public sample urls, cover images.
+    # coding problems (نادي البرمجة)
+    if await db.coding_problems.count_documents({}) == 0:
+        problems = [
+            {"title": "مجموع رقمين", "difficulty": 1, "xp": 20,
+             "statement": "اقرأ سطراً يحتوي على عددين صحيحين مفصولين بمسافة، واطبع مجموعهما.",
+             "tests": [{"input": "3 5\n", "output": "8"}, {"input": "10 -4\n", "output": "6"}, {"input": "0 0\n", "output": "0"}]},
+            {"title": "أكبر عدد", "difficulty": 1, "xp": 25,
+             "statement": "اقرأ عدد العناصر n في السطر الأول، ثم n أعداد في السطر الثاني، واطبع أكبرها.",
+             "tests": [{"input": "3\n1 9 4\n", "output": "9"}, {"input": "5\n-2 -7 -1 -9 -3\n", "output": "-1"}]},
+            {"title": "مضروب العدد", "difficulty": 2, "xp": 35,
+             "statement": "اقرأ عدداً صحيحاً n (0 ≤ n ≤ 12) واطبع مضروبه n!.",
+             "tests": [{"input": "5\n", "output": "120"}, {"input": "0\n", "output": "1"}, {"input": "7\n", "output": "5040"}]},
+            {"title": "عدد أولي؟", "difficulty": 2, "xp": 40,
+             "statement": "اقرأ عدداً صحيحاً n واطبع 'YES' إن كان أولياً وإلا 'NO'.",
+             "tests": [{"input": "7\n", "output": "YES"}, {"input": "1\n", "output": "NO"}, {"input": "12\n", "output": "NO"}]},
+        ]
+        for p in problems:
+            await db.coding_problems.insert_one({**p, "created_at": now_iso()})
+
     admin = await db.users.find_one({"email": admin_email})
     admin_id = str(admin["_id"]) if admin else None
     if await db.books.count_documents({}) == 0 and admin_id:

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Chess } from "chess.js";
 import { Layout, PageLoader } from "@/components/Layout";
-import api, { apiErr } from "@/lib/api";
+import api, { apiErr, wsUrl } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -30,18 +30,26 @@ export default function ChessGame() {
     } catch (e) { toast.error(apiErr(e)); }
   }, [id]);
 
-  useEffect(() => { load(); const t = setInterval(load, 4000); return () => clearInterval(t); }, [load]);
+  useEffect(() => { load(); const t = setInterval(load, 6000); return () => clearInterval(t); }, [load]);
+
+  // real-time via WebSocket (polling above stays as fallback)
+  useEffect(() => {
+    let ws;
+    try {
+      ws = new WebSocket(wsUrl(`/api/ws/chess/${id}`));
+      ws.onmessage = () => load();
+    } catch {}
+    return () => { try { ws && ws.close(); } catch {} };
+  }, [id, load]);
 
   const myColor = game?.my_color;
   const myTurn = game && game.status === "active" && game.turn === myColor;
-
-  // board squares, oriented for player (black sees flipped)
-  const ranks = useMemo(() => {
+  const ranks = (() => {
     const r = [8, 7, 6, 5, 4, 3, 2, 1];
     const f = [...FILES];
     if (myColor === "b") { r.reverse(); f.reverse(); }
     return { r, f };
-  }, [myColor]);
+  })();
 
   const onSquareClick = async (square) => {
     if (!myTurn || !chess) return;

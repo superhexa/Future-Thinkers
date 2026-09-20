@@ -130,6 +130,11 @@ async def make_move(gid: str, body: MoveBody, user: dict = Depends(get_current_u
         "$push": {"moves": {"san": body.san, "by": user["id"], "at": now_iso()}}})
     opp = g["black_id"] if my_color == "w" else g["white_id"]
     await create_notification(opp, "chess", "دورك في الشطرنج ♟️", "لعب خصمك نقلته", f"/chess/{gid}")
+    try:
+        from ws import hub
+        await hub.broadcast_game(gid, {"kind": "move", "fen": body.fen, "san": body.san, "turn": body.turn})
+    except Exception:
+        pass
     return {"ok": True}
 
 
@@ -181,6 +186,11 @@ async def _finalize(g, result, resigned_by=None):
         await bump_stat(winner_id, "chess_wins", 1)
         await award_xp(winner_id, pc.get("win_chess", 30), "الفوز بمباراة شطرنج", str(g["_id"]))
         await create_notification(winner_id, "chess", "فزت بالمباراة! 🏆", "+تقييم ونقاط خبرة")
+    try:
+        from ws import hub
+        await hub.broadcast_game(str(g["_id"]), {"kind": "result", "result": result, "winner_id": winner_id})
+    except Exception:
+        pass
 
 
 @router.get("/leaderboard")

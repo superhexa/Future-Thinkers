@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import api from "@/lib/api";
+import { wsUrl } from "@/lib/api";
+import { toast } from "sonner";
 import { NotificationsPanel } from "@/components/NotificationsPanel";
 import { GlobalSearch } from "@/components/GlobalSearch";
 
@@ -36,6 +38,19 @@ export function Navbar() {
   useEffect(() => { loadUnread(); const t = setInterval(loadUnread, 20000); return () => clearInterval(t); }, [loadUnread, loc.pathname]);
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 
+  // real-time notifications via WebSocket (polling above stays as fallback)
+  useEffect(() => {
+    if (!user) return;
+    let ws;
+    try {
+      ws = new WebSocket(wsUrl("/api/ws/notifications"));
+      ws.onmessage = (ev) => {
+        try { const d = JSON.parse(ev.data); if (d.kind === "notification") { setUnread((n) => n + 1); toast(d.title, { description: d.body }); } } catch {}
+      };
+    } catch {}
+    return () => { try { ws && ws.close(); } catch {} };
+  }, [user]);
+
   return (
     <header className="sticky top-0 z-50 glass border-b border-slate-200/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
@@ -44,7 +59,7 @@ export function Navbar() {
           <nav className="hidden lg:flex items-center gap-1">
             {LINKS.map((l) => (
               <Link key={l.to} to={l.to} data-testid={`nav-${l.to.slice(1)}`}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${loc.pathname.startsWith(l.to) ? "text-blue-700 bg-blue-50" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"}`}>
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${loc.pathname.startsWith(l.to) ? "text-emerald-700 bg-emerald-50" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"}`}>
                 {l.label}
               </Link>
             ))}
@@ -89,7 +104,7 @@ export function Navbar() {
           ) : (
             <div className="hidden sm:flex items-center gap-2">
               <Button variant="ghost" data-testid="nav-login-btn" onClick={() => nav("/login")} className="rounded-xl">دخول</Button>
-              <Button data-testid="nav-register-btn" onClick={() => nav("/register")} className="rounded-xl bg-blue-600 hover:bg-blue-700">انضم الآن</Button>
+              <Button data-testid="nav-register-btn" onClick={() => nav("/register")} className="rounded-xl bg-emerald-600 hover:bg-emerald-700">انضم الآن</Button>
             </div>
           )}
           <Button variant="ghost" size="icon" className="lg:hidden rounded-xl" data-testid="mobile-menu-btn" onClick={() => setOpen((v) => !v)}>

@@ -35,7 +35,7 @@ export default function Landing() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative overflow-hidden ft-navy-gradient grain text-white">
+      <section className="relative overflow-hidden ft-hero-gradient grain text-white">
         <div className="absolute top-20 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-0 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 relative">
@@ -76,7 +76,7 @@ export default function Landing() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-3xl p-8 ft-shadow border border-slate-100 hover-lift">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 grid place-items-center mb-4"><Flag className="w-6 h-6 text-blue-600" /></div>
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 grid place-items-center mb-4"><Flag className="w-6 h-6 text-emerald-600" /></div>
             <h2 className="font-head text-2xl font-bold text-slate-900">رؤيتنا</h2>
             <p className="mt-3 text-slate-600 leading-relaxed">{cms?.vision || "أن نبني جيلاً أردنياً قارئاً ومفكراً ومبدعاً، يصنع المعرفة ويقود المستقبل."}</p>
           </div>
@@ -90,7 +90,7 @@ export default function Landing() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(cms?.goals || []).map((g, i) => (
             <div key={i} className="flex items-start gap-3 bg-white rounded-2xl p-5 border border-slate-100 ft-shadow">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-emerald-600 text-white grid place-items-center text-sm font-bold shrink-0">{i + 1}</div>
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white grid place-items-center text-sm font-bold shrink-0">{i + 1}</div>
               <p className="text-slate-700 text-sm leading-relaxed">{g}</p>
             </div>
           ))}
@@ -112,7 +112,7 @@ export default function Landing() {
                   <div className="w-12 h-12 rounded-2xl grid place-items-center mb-4 text-white" style={{ background: c.color }}><Icon className="w-6 h-6" /></div>
                   <h3 className="font-head font-bold text-lg text-slate-900">{c.name}</h3>
                   <p className="mt-2 text-sm text-slate-500 line-clamp-2 leading-relaxed">{c.description}</p>
-                  <div className="mt-4 text-blue-600 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">ادخل النادي <ArrowLeft className="w-4 h-4" /></div>
+                  <div className="mt-4 text-emerald-600 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">ادخل النادي <ArrowLeft className="w-4 h-4" /></div>
                 </Link>
               );
             })}
@@ -122,7 +122,7 @@ export default function Landing() {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="ft-navy-gradient grain relative overflow-hidden rounded-[2rem] p-10 lg:p-16 text-center text-white">
+        <div className="ft-hero-gradient grain relative overflow-hidden rounded-[2rem] p-10 lg:p-16 text-center text-white">
           <Trophy className="w-14 h-14 text-emerald-400 mx-auto mb-5" />
           <h2 className="font-head text-3xl lg:text-4xl font-extrabold">جاهز لتكون من مفكري المستقبل؟</h2>
           <p className="mt-4 text-slate-300 max-w-xl mx-auto">انضم إلى آلاف الطلاب في رحلة معرفية تنافسية، واجمع نقاط الخبرة، وتصدّر قوائم الصدارة الوطنية.</p>

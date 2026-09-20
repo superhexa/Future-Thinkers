@@ -34,6 +34,15 @@ export default function CompetitionDetail() {
     catch (e) { toast.error(apiErr(e)); }
   };
 
+  const downloadCert = async () => {
+    try {
+      const res = await api.get(`/certificates/competition/${id}`, { responseType: "blob" });
+      const url = URL.createObjectURL(res.data);
+      const a = document.createElement("a"); a.href = url; a.download = `certificate-${id}.pdf`; a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) { toast.error(apiErr(e)); }
+  };
+
   if (!c) return <Layout><PageLoader /></Layout>;
   const registered = !!c.my_entry;
   const submitted = c.my_entry?.submitted;
@@ -53,7 +62,10 @@ export default function CompetitionDetail() {
           </div>
 
           {submitted ? (
-            <div className="mt-5 p-4 rounded-xl bg-emerald-50 text-emerald-700 flex items-center gap-2"><CheckCircle2 className="w-5 h-5" /> أكملت المسابقة — نتيجتك {c.my_entry.score}% ({c.my_entry.correct}/{c.my_entry.total})</div>
+            <div className="mt-5 space-y-3">
+              <div className="p-4 rounded-xl bg-emerald-50 text-emerald-700 flex items-center gap-2"><CheckCircle2 className="w-5 h-5" /> أكملت المسابقة — نتيجتك {c.my_entry.score}% ({c.my_entry.correct}/{c.my_entry.total})</div>
+              <Button data-testid="download-cert-btn" onClick={downloadCert} variant="outline" className="rounded-xl h-11 border-emerald-200 text-emerald-700"><Award className="w-4 h-4 ml-1" /> تنزيل شهادة المشاركة</Button>
+            </div>
           ) : !registered ? (
             <Button data-testid="register-competition-btn" onClick={register} className="mt-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 h-11">سجّل في المسابقة</Button>
           ) : !taking ? (

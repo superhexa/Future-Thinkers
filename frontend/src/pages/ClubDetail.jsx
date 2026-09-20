@@ -12,6 +12,9 @@ import { toast } from "sonner";
 import * as Icons from "lucide-react";
 import { Users, MessageSquare, Heart, Plus, Crown, Trophy, Swords } from "lucide-react";
 import { ChessArena } from "@/components/ChessArena";
+import { CodingPanel, ProjectsPanel, DebatesPanel } from "@/components/ClubPanels";
+
+const SPECIAL_INIT = { chess: "main", programming: "coding", innovation: "projects", debate: "debates" };
 
 function DialogueForum({ slug }) {
   const { user } = useAuth();
@@ -114,7 +117,7 @@ export default function ClubDetail() {
   const [tab, setTab] = useState("main");
 
   const load = async () => { const { data } = await api.get(`/clubs/${slug}`); setClub(data); };
-  useEffect(() => { load(); setTab("main"); }, [slug]);
+  useEffect(() => { load(); setTab(SPECIAL_INIT[slug] || "main"); }, [slug]);
 
   const toggleMember = async () => {
     if (!user) return nav("/login");
@@ -125,10 +128,15 @@ export default function ClubDetail() {
   if (!club) return <Layout><PageLoader /></Layout>;
   const Icon = Icons[club.icon] || Icons.Circle;
 
-  const tabs = slug === "chess"
-    ? [["main", "الحلبة"], ["leaderboard", "التصنيف"], ["forum", "النقاشات"]]
-    : [["forum", "النقاشات"], ["leaderboard", "الصدارة"], ["members", "الأعضاء"]];
-  const activeTab = tab === "main" && slug !== "chess" ? "forum" : tab;
+  const SPECIAL = {
+    chess: [["main", "الحلبة"], ["leaderboard", "التصنيف"], ["forum", "النقاشات"]],
+    programming: [["coding", "التحديات البرمجية"], ["leaderboard", "الصدارة"], ["forum", "النقاشات"]],
+    innovation: [["projects", "المشاريع"], ["forum", "النقاشات"], ["members", "الأعضاء"]],
+    debate: [["debates", "المناظرات"], ["forum", "النقاشات"], ["members", "الأعضاء"]],
+  };
+  const tabs = SPECIAL[slug] || [["forum", "النقاشات"], ["leaderboard", "الصدارة"], ["members", "الأعضاء"]];
+  const defaultTab = tabs[0][0];
+  const activeTab = tab === "main" && slug !== "chess" ? defaultTab : (tab === "main" ? "main" : tab);
 
   return (
     <Layout>
@@ -153,14 +161,17 @@ export default function ClubDetail() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-2 border-b border-slate-200 mb-6">
           {tabs.map(([v, l]) => (
-            <button key={v} data-testid={`club-tab-${v}`} onClick={() => setTab(v)} className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${(tab === v) ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-800"}`}>{l}</button>
+            <button key={v} data-testid={`club-tab-${v}`} onClick={() => setTab(v)} className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${(tab === v) ? "border-emerald-600 text-emerald-700" : "border-transparent text-slate-500 hover:text-slate-800"}`}>{l}</button>
           ))}
         </div>
 
-        {slug === "chess" && tab === "main" && <ChessArena />}
+        {slug === "chess" && activeTab === "main" && <ChessArena />}
+        {activeTab === "coding" && <CodingPanel />}
+        {activeTab === "projects" && <ProjectsPanel />}
+        {activeTab === "debates" && <DebatesPanel />}
         {activeTab === "forum" && <DialogueForum slug={slug} />}
-        {tab === "leaderboard" && <ClubLeaderboard slug={slug} />}
-        {tab === "members" && <MembersList slug={slug} />}
+        {activeTab === "leaderboard" && <ClubLeaderboard slug={slug} />}
+        {activeTab === "members" && <MembersList slug={slug} />}
       </div>
     </Layout>
   );

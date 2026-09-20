@@ -22,6 +22,14 @@ export default function EventDetail() {
     catch (err) { toast.error(apiErr(err)); }
   };
   const unregister = async () => { await api.post(`/events/${id}/unregister`); toast.info("ألغيت تسجيلك"); load(); };
+  const downloadCert = async () => {
+    try {
+      const res = await api.get(`/certificates/event/${id}`, { responseType: "blob" });
+      const url = URL.createObjectURL(res.data);
+      const a = document.createElement("a"); a.href = url; a.download = `event-${id}.pdf`; a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) { toast.error(apiErr(err)); }
+  };
 
   if (!e) return <Layout><PageLoader /></Layout>;
 
@@ -60,6 +68,7 @@ export default function EventDetail() {
                   <div className="font-semibold text-slate-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> رمز الحضور الخاص بك</div>
                   <div className="font-mono text-lg tracking-widest text-blue-700 mt-1">{e.qr_code}</div>
                   <div className="text-xs text-slate-400 mt-1">{e.checked_in ? "تم تسجيل حضورك ✓" : "أظهر هذا الرمز عند الدخول"}</div>
+                  <Button data-testid="download-event-cert-btn" onClick={downloadCert} variant="outline" size="sm" className="mt-2 rounded-lg border-emerald-200 text-emerald-700"><CheckCircle2 className="w-4 h-4 ml-1" />تنزيل شهادة المشاركة</Button>
                 </div>
               </div>
             )}

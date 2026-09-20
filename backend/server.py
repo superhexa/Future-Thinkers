@@ -5,7 +5,7 @@ load_dotenv(ROOT_DIR / ".env")
 
 import os
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 from starlette.middleware.cors import CORSMiddleware
@@ -25,6 +25,13 @@ from routes.leaderboard_routes import router as leaderboard_router
 from routes.social_routes import router as social_router
 from routes.content_routes import router as content_router
 from routes.admin_routes import router as admin_router
+from routes.coding_routes import router as coding_router
+from routes.showcase_routes import router as showcase_router
+from routes.cert_routes import router as cert_router
+from ws import hub
+import jwt
+from bson import ObjectId
+from auth import get_secret
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -34,8 +41,50 @@ app = FastAPI(title="منصة مفكري المستقبل API", version="1.0.0")
 
 for r in (auth_router, geo_router, books_router, files_router, community_router,
           chess_router, events_router, leaderboard_router, social_router,
-          content_router, admin_router):
+          content_router, admin_router, coding_router, showcase_router, cert_router):
     app.include_router(r)
+
+
+async def _ws_user(websocket, token):
+    try:
+        payload = jwt.decode(token, get_secret(), algorithms=["HS256"])
+        return payload.get("sub")
+    except Exception:
+        return None
+
+
+@app.websocket("/api/ws/notifications")
+async def ws_notifications(websocket: WebSocket):
+    await websocket.accept()
+    uid = await _ws_user(websocket, websocket.query_params.get("token"))
+    if not uid:
+        await websocket.close(code=1008)
+        return
+    await hub.join(hub.user_conns, uid, websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        pass
+    finally:
+        await hub.leave(hub.user_conns, uid, websocket)
+
+
+@app.websocket("/api/ws/chess/{game_id}")
+async def ws_chess(websocket: WebSocket, game_id: str):
+    await websocket.accept()
+    uid = await _ws_user(websocket, websocket.query_params.get("token"))
+    if not uid:
+        await websocket.close(code=1008)
+        return
+    await hub.join(hub.game_conns, game_id, websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        pass
+    finally:
+        await hub.leave(hub.game_conns, game_id, websocket)
 
 
 @app.get("/api/")

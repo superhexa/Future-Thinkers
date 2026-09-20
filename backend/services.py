@@ -96,10 +96,16 @@ async def bump_stat(user_id: str, stat: str, delta: int = 1):
 
 
 async def create_notification(user_id: str, type_: str, title: str, body: str = "", link: str = None):
-    await db.notifications.insert_one({
+    doc = {
         "user_id": user_id, "type": type_, "title": title, "body": body,
         "link": link, "read": False, "created_at": now_iso(),
-    })
+    }
+    await db.notifications.insert_one(doc)
+    try:
+        from ws import hub
+        await hub.notify_user(user_id, {"kind": "notification", "title": title, "body": body, "link": link})
+    except Exception:
+        pass
 
 
 async def broadcast_notification(user_ids, type_, title, body="", link=None):
