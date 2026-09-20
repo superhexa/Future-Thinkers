@@ -119,9 +119,11 @@ async def login(body: LoginBody, request: Request, response: Response):
 
     user = await db.users.find_one({"email": email})
     if not user or not verify_password(body.password, user.get("password_hash", "")):
-        await db.login_attempts.update_one({"identifier": ident},
-            {"$inc": {"count": 1}, "$set": {"locked_until": (now + timedelta(minutes=LOCK_MINUTES)).isoformat()}},
-            upsert=True)
+        new_count = (rec.get("count", 0) if rec else 0) + 1
+        upd = {"$set": {"count": new_count}}
+        if new_count >= MAX_ATTEMPTS:
+            upd["$set"]["locked_until"] = (now + timedelta(minutes=LOCK_MINUTES)).isoformat()
+        await db.login_attempts.update_one({"identifier": ident}, upd, upsert=True)
         raise HTTPException(status_code=401, detail="البريد الإلكتروني أو كلمة المرور غير صحيحة")
     if user.get("status") == "banned":
         raise HTTPException(status_code=403, detail="تم حظر هذا الحساب")

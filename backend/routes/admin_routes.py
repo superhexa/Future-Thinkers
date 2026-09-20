@@ -71,6 +71,11 @@ class RoleBody(BaseModel):
 async def update_role(uid: str, body: RoleBody, request: Request, user: dict = Depends(require_permission("role.manage"))):
     if body.role not in ROLES:
         raise HTTPException(status_code=400, detail="دور غير صالح")
+    target = await db.users.find_one({"_id": oid(uid)})
+    if target and target.get("role") == "super_admin" and body.role != "super_admin":
+        remaining = await db.users.count_documents({"role": "super_admin"})
+        if remaining <= 1:
+            raise HTTPException(status_code=400, detail="لا يمكن تخفيض رتبة المسؤول الأعلى الوحيد")
     upd = {"role": body.role}
     if body.extra_permissions is not None:
         invalid = set(body.extra_permissions) - set(ALL_PERMISSIONS)
