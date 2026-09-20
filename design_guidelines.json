@@ -1,0 +1,168 @@
+{
+  "project_identity": {
+    "name": "منصة مفكري المستقبل (Future Thinkers Platform)",
+    "description": "المملكة الأردنية الهاشمية - المنصة الوطنية المعرفية والثقافية والرمزية لطلاب مدارس الأردن (منصة هجينة Full-stack RTL)",
+    "target_audience": "طلاب المدارس في الأردن، المعلمون، مدراء المدارس، مديريات التربية، ووزارة التربية والتعليم",
+    "theme_mode": "Light Theme أساسي مع دمج لمسات داكنة فخمة (Slate/Deep Navy) للأنشطة والبطولات، ودعم التبديل بين النهار/الليل",
+    "direction": "rtl",
+    "locale": "ar-JO"
+  },
+  "typography": {
+    "primary_font": "Readex Pro, IBM Plex Sans Arabic, Cairo, sans-serif",
+    "heading_font": "Readex Pro, sans-serif",
+    "body_font": "IBM Plex Sans Arabic, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "font_family_import": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Readex+Pro:wght@300;400;500;600;700;800&display=swap",
+    "rules": {
+      "arabic_tracking": "DO NOT use letter-spacing (tracking) on Arabic text as it breaks connected script glyphs. Use letter-spacing: 0",
+      "arabic_line_height": "Set body leading to leading-relaxed or leading-loose (1.7 to 1.85) to accommodate Arabic ascenders, descenders, and tashkeel",
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100",
+      "h3": "text-xl sm:text-2xl font-semibold text-slate-800 dark:text-slate-200",
+      "body": "text-base text-slate-600 dark:text-slate-300 leading-relaxed",
+      "small": "text-sm text-slate-500 dark:text-slate-400"
+    }
+  },
+  "colors": {
+    "archetype": "Modern National Knowledge SaaS (Jordan Royal & Emerald)",
+    "palette": {
+      "background": "#F8FAFC",
+      "surface_card": "#FFFFFF",
+      "surface_muted": "#F1F5F9",
+      "text_primary": "#0F172A",
+      "text_secondary": "#475569",
+      "text_muted": "#64748B",
+      "brand_navy": "#0A192F",
+      "brand_blue": "#2563EB",
+      "brand_blue_light": "#EFF6FF",
+      "emerald_accent": "#059669",
+      "emerald_bg": "#ECFDF5",
+      "amber_gold": "#D97706",
+      "amber_bg": "#FFFBEB",
+      "rose_accent": "#E11D48",
+      "border_subtle": "#E2E8F0",
+      "glass_bg": "rgba(255, 255, 255, 0.82)"
+    },
+    "gradients": {
+      "hero_badge": "bg-gradient-to-r from-blue-500/10 via-emerald-500/10 to-indigo-500/10",
+      "national_header": "bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900",
+      "gold_trophy": "bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600",
+      "silver_trophy": "bg-gradient-to-r from-slate-300 via-slate-400 to-slate-500",
+      "bronze_trophy": "bg-gradient-to-r from-amber-700 via-amber-800 to-yellow-900"
+    }
+  },
+  "layout_and_hierarchy": {
+    "direction": "rtl",
+    "spacing_scale": "p-4, p-6, p-8, p-12, p-16, p-20",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+    "container_padding": "px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto",
+    "national_hierarchy_structure": {
+      "kingdom": "المملكة الأردنية الهاشمية (National)",
+      "governorates": ["عمان", "إربد", "الزرقاء", "البلقاء", "الكرك", "معان", "العقبة", "عجلون", "جرش", "المفرق", "طفيلة", "مأدبا"],
+      "directorates": ["مديرية لواء قصبة عمان", "مديرية لواء الجامعة", "مديرية لواء إربد الأولى", "مديرية الزرقاء الأولى", "مديرية العقبة"],
+      "schools": ["مدرسة الملك عبد الله الثاني للميزين", "مدرسة الحسين الثانوية الشاملة", "مدرسة اليوبيل", "مدرسة الأمير حسن الثانوية", "مدرسة الروم الكاثوليك"],
+      "students": "ملف الطالب الفردي مع الرمز الوطني الطلابي (National Student ID)"
+    }
+  },
+  "key_views_and_features": [
+    {
+      "view_id": "landing_page",
+      "title": "الصفحة الرئيسية (Landing Page)",
+      "components": [
+        "Hero Section with slogan 'نقرأ أكثر، نفكر أعمق، ونصنع المستقبل'",
+        "National Administrative Ribbon (المملكة → المحافظات → المديريات → المدارس)",
+        "Vision, Mission, and Core Goals Grid",
+        "Dynamic Animated Stats Counters (عدد مفكري المستقبل، الكتب المقروءة، تحديات الشطرنج، الساعات البرمجية)",
+        "Interactive Knowledge Clubs Showcase (نادي الكتب، نادي الشطرنج، نادي الحوار والمناظرات، نادي العلوم والتكنولوجيا، نادي ريادة الأعمال)",
+        "Call to Action Section ('انضم إلى مفكري المستقبل')",
+        "Footer with official Jordan education links and copyright"
+      ]
+    },
+    {
+      "view_id": "student_dashboard",
+      "title": "لوحة تحكم الطالب (Student Dashboard)",
+      "components": [
+        "Student Overview Card (XP points, Level badge, Streak days, National rank)",
+        "Reading Progress & Currently Reading Book widget with progress bar",
+        "Upcoming Events & Competitions timeline",
+        "Recommended Books & Daily Science Challenge widget",
+        "Leaderboard Quick Peek (School vs Directorate vs Kingdom position)",
+        "Recent Achievements & Unlocked Badges"
+      ]
+    },
+    {
+      "view_id": "digital_library",
+      "title": "المكتبة الرقمية وقارئ الكتب (Digital Library & PDF Reader)",
+      "components": [
+        "Search bar with category filter tabs (علوم، أداء وأدب، برمجة وتكنولوجيا، فلسفة وفكر، تاريخ الأردن والوطن العربي)",
+        "Book Cards Grid with covers, author, reading duration, rating, XP reward",
+        "Interactive PDF Reader modal/drawer with zoom, page navigation, bookmarking, highlight notes, and read progress saving"
+      ]
+    },
+    {
+      "view_id": "interactive_clubs",
+      "title": "الأندية الطلابية (Clubs & Community)",
+      "components": [
+        "Chess Arena (لوحة شطرنج تفاعلية للعب ضد الحاسوب أو زميل طالب، تحليل نقلات، وسجل مباريات الأردن)",
+        "Dialogue Forum (منتدى الحوار والمناظرات مع إمكانية نشر موضوع، الردود، التقييم الإيجابي، وتوسيع النقاشات العلمية والأدبية)"
+      ]
+    },
+    {
+      "view_id": "multi_level_leaderboards",
+      "title": "قوائم الصدارة الوطنية (Multi-level Leaderboards)",
+      "components": [
+        "Level Filter Tabs (المملكة / المحافظة / المديرية / المدرسة / الطالب)",
+        "Top 3 Podium (المركز الأول الذهبي، الثاني الفضي، الثالث البرونزي)",
+        "Rankings Data Table with search, avatar, school name, governorate badge, XP points, and streak badges"
+      ]
+    },
+    {
+      "view_id": "admin_dashboard",
+      "title": "لوحة تحكم المسؤول (Admin Dashboard)",
+      "components": [
+        "National Overview Analytics Cards (إجمالي الطلاب المسجلين، المدارس المشاركة، الكتب المكتملة، التحديات المنفذة)",
+        "Interactive Recharts (نمو النشاط الطلابي حسب المحافظة، أكثر الكتب قراءة)",
+        "Student & School Management Table with action buttons (إضافة كتاب جديد، اعتماد نتيجة مناظرة، تعديل النقاط)"
+      ]
+    },
+    {
+      "view_id": "student_profile",
+      "title": "الملف الشخصي للطالب (Student Profile)",
+      "components": [
+        "Personal info & National School Details",
+        "Badges showcase & Skill radar breakdown",
+        "Activity log & Reading history"
+      ]
+    },
+    {
+      "view_id": "notifications_center",
+      "title": "مركز التنبيهات (Notification Center)",
+      "components": [
+        "Notification drawer with unread count badge, interactive filter (تحديات، مسابقات، ردود منتدى، إنجازات جديدة)"
+      ]
+    }
+  ],
+  "image_urls": {
+    "library_hero": "https://images.pexels.com/photos/10626498/pexels-photo-10626498.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "chess_arena": "https://images.pexels.com/photos/29621161/pexels-photo-29621161.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "robotics_lab": "https://images.pexels.com/photos/9242846/pexels-photo-9242846.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "jordan_ruins_amman": "https://images.pexels.com/photos/11932149/pexels-photo-11932149.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "petra_treasury": "https://images.pexels.com/photos/28617385/pexels-photo-28617385.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  },
+  "component_guidelines": {
+    "icons": "Use lucide-react icons for UI elements. Note: For RTL chevron/arrow icons, use ChevronLeft/ChevronRight intentionally for forward/back in Arabic RTL.",
+    "buttons": "Rounded-xl or Rounded-2xl with smooth transitions, hover:shadow-md, focus:ring-2 focus:ring-blue-500 focus:outline-none.",
+    "cards": "bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
+    "toasts": "Use sonner for notifications (located in src/components/ui/sonner.js / sonner.tsx)",
+    "data_testid": "ALL interactive components, buttons, tabs, inputs, modal triggers MUST have explicit kebab-case data-testid attributes (e.g. data-testid='login-btn', data-testid='book-read-btn', data-testid='chess-move-btn')"
+  },
+  "instructions_to_main_agent": [
+    "Ensure dir='rtl' is active on the html element or main wrapper so text flows properly right-to-left.",
+    "Import Readex Pro and IBM Plex Sans Arabic fonts in index.html / index.css.",
+    "Use Western Arabic numerals (1, 2, 3) for stats and dates for clean SaaS legibility.",
+    "Ensure all mock data includes realistic Jordanian governorates, directorates, and schools.",
+    "Implement rich interactive states: empty states when filters produce no results, loading skeleton states, modal for PDF reader, and functional interactive chess board or simulator.",
+    "Make sure header, navigation bar, and dark mode toggle are seamless and accessible.",
+    "Always add data-testid on buttons, inputs, tabs, modal controls, and card links."
+  ]
+}
