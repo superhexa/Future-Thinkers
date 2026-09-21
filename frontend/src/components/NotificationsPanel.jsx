@@ -23,7 +23,7 @@ export function NotificationsPanel({ onClose }) {
   return (
     <>
       <div className="fixed inset-0 z-40" onClick={onClose} />
-      <div className="absolute left-0 mt-2 w-[360px] max-w-[92vw] bg-white rounded-2xl ft-shadow-lg border border-slate-200 z-50 overflow-hidden" data-testid="notifications-panel">
+      <div dir="rtl" className="fixed inset-x-2 top-16 sm:absolute sm:inset-x-auto sm:left-0 sm:right-auto sm:mt-2 w-auto sm:w-[360px] max-w-none bg-white rounded-2xl ft-shadow-lg border border-slate-200 z-50 overflow-hidden" data-testid="notifications-panel">
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
           <span className="font-semibold flex items-center gap-2"><Bell className="w-4 h-4" /> الإشعارات</span>
           <Button variant="ghost" size="sm" data-testid="mark-all-read-btn" onClick={markAll} className="text-xs text-blue-600"><Check className="w-3.5 h-3.5 ml-1" />تعليم الكل كمقروء</Button>

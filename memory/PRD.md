@@ -9,7 +9,7 @@ events, competitions, multi-level leaderboards, gamification, notifications, mod
 ## Architecture
 - Frontend: React 19, React Router, Tailwind + shadcn/ui, Recharts, chess.js, Arabic RTL, framer-motion utilities.
 - Backend: FastAPI modular routers + MongoDB (motor). JWT (Bearer + httpOnly cookie) + RBAC granular permissions.
-- Storage: Emergent Object Storage abstraction with optional Telegram mirror (env-only secrets). DB = source of truth.
+- Storage: Deployment-neutral local file adapter (env-only secrets). DB = source of truth.
 
 ## User personas
 Student, Teacher, School Admin, Directorate Admin, Moderator, Admin, Super Admin.

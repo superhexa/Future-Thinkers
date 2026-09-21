@@ -5,12 +5,12 @@ import api, { fileUrl, apiErr } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Star, Heart, BookOpen, ArrowRight, Eye, Download, Maximize2, X, Check } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-function Reader({ book, onClose, onProgress }) {
+function Reader({ book, onClose, onProgress, onComplete }) {
   const [percent, setPercent] = useState(book.my_progress || 0);
   const save = async (p) => { setPercent(p); await onProgress(p); };
   return (
@@ -20,12 +20,12 @@ function Reader({ book, onClose, onProgress }) {
         <div className="flex items-center gap-2">
           <span className="text-sm text-slate-300">تقدم القراءة: {Math.round(percent)}%</span>
           <Button size="sm" variant="secondary" data-testid="reader-mark-btn" onClick={() => save(Math.min(100, percent + 25))} className="rounded-lg"><Check className="w-4 h-4 ml-1" />+25%</Button>
-          <Button size="sm" variant="secondary" data-testid="reader-complete-btn" onClick={() => save(100)} className="rounded-lg">أكملت الكتاب</Button>
+          <Button size="sm" variant="secondary" data-testid="reader-complete-btn" onClick={() => onComplete()} className="rounded-lg">أكملت الكتاب</Button>
           <Button size="icon" variant="ghost" data-testid="reader-close-btn" onClick={onClose} className="text-white"><X className="w-5 h-5" /></Button>
         </div>
       </div>
-      <div className="flex-1 bg-slate-700">
-        <iframe title={book.title} src={book.pdf_url} className="w-full h-full" />
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-slate-700 overscroll-contain" style={{ WebkitOverflowScrolling: "touch" }}>
+        <iframe title={book.title} src={book.pdf_url} className="block h-[calc(100vh-4.5rem)] min-h-[760px] w-full border-0" scrolling="yes" allow="fullscreen" />
       </div>
       <div className="h-2 bg-slate-800"><div className="h-full bg-emerald-500 transition-all" style={{ width: `${percent}%` }} /></div>
     </div>
@@ -41,6 +41,9 @@ export default function BookDetail() {
   const [reading, setReading] = useState(false);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
+  const [summaryOpen, setSummaryOpen] = useState(false);
+  const [summary, setSummary] = useState("");
+  const [summarySending, setSummarySending] = useState(false);
 
   const load = async () => {
     const [b, r] = await Promise.all([api.get(`/books/${id}`), api.get(`/books/${id}/reviews`)]);
@@ -58,6 +61,18 @@ export default function BookDetail() {
     await api.post(`/books/${id}/progress`, { page: 1, percent });
     setBook((b) => ({ ...b, my_progress: percent }));
     if (percent >= 100) toast.success("أكملت الكتاب! +نقاط خبرة 🎉");
+  };
+
+  const completeBook = () => setSummaryOpen(true);
+  const submitSummary = async () => {
+    if (summary.trim().length < 30) return toast.error("اكتب ملخصاً من 30 حرفاً على الأقل");
+    setSummarySending(true);
+    try {
+      await saveProgress(100);
+      await api.post(`/books/${id}/summary`, { summary: summary.trim() });
+      toast.success("تم اعتماد إتمام الكتاب وإرسال ملخصك");
+      setSummaryOpen(false); setSummary(""); setReading(false);
+    } catch (e) { toast.error(apiErr(e)); } finally { setSummarySending(false); }
   };
 
   const submitReview = async () => {
@@ -126,7 +141,14 @@ export default function BookDetail() {
           </div>
         </div>
       </div>
-      {reading && <Reader book={book} onClose={() => setReading(false)} onProgress={saveProgress} />}
+      {reading && <Reader book={book} onClose={() => setReading(false)} onProgress={saveProgress} onComplete={completeBook} />}
+      <Dialog open={summaryOpen} onOpenChange={setSummaryOpen}>
+        <DialogContent dir="rtl" className="sm:max-w-lg">
+          <DialogHeader><DialogTitle>أثبت قراءتك للكتاب</DialogTitle><DialogDescription>اكتب ملخصاً قصيراً يوضح أهم الأفكار التي خرجت بها.</DialogDescription></DialogHeader>
+          <Textarea autoFocus value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="ما أهم فكرة أو درس تعلمته؟" className="min-h-36 rounded-xl" />
+          <DialogFooter><Button onClick={submitSummary} disabled={summarySending} className="rounded-xl bg-emerald-600 hover:bg-emerald-700">{summarySending ? "جارٍ التحقق…" : "إرسال الملخص وإتمام الكتاب"}</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }
