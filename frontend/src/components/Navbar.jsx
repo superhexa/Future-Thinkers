@@ -17,6 +17,7 @@ const LINKS = [
   { to: "/clubs", label: "الأندية" },
   { to: "/events", label: "الفعاليات" },
   { to: "/competitions", label: "المسابقات" },
+  { to: "/tournaments", label: "بطولات الشطرنج" },
   { to: "/leaderboard", label: "الصدارة" },
   { to: "/news", label: "الأخبار" },
 ];
@@ -53,7 +54,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-slate-200/70">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         <div className="flex items-center gap-6">
           <Link to="/" data-testid="nav-home-link"><Logo /></Link>
           <nav className="hidden lg:flex items-center gap-1">

@@ -19,6 +19,7 @@ import ChessGame from "@/pages/ChessGame";
 import Events from "@/pages/Events";
 import EventDetail from "@/pages/EventDetail";
 import Competitions from "@/pages/Competitions";
+import Tournaments from "@/pages/Tournaments";
 import CompetitionDetail from "@/pages/CompetitionDetail";
 import Leaderboard from "@/pages/Leaderboard";
 import Profile from "@/pages/Profile";
@@ -48,6 +49,8 @@ function App() {
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/competitions" element={<Competitions />} />
           <Route path="/competitions/:id" element={<CompetitionDetail />} />
+ <Route path="/tournaments" element={<Tournaments />} />
+ <Route path="/tournaments/:id" element={<Tournaments />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/news" element={<News />} />
           <Route path="/profile/:id" element={<Profile />} />
