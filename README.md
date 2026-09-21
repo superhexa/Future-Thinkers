@@ -5,7 +5,7 @@
 ## Architecture
 - **Frontend:** React 19 + React Router + TailwindCSS + shadcn/ui + Recharts + chess.js (Arabic RTL).
 - **Backend:** FastAPI (modular routers) + MongoDB (motor). JWT auth + RBAC permissions.
-- **Storage:** Emergent Object Storage abstraction (`storage.py`) with optional Telegram mirroring; DB is source of truth.
+- **Storage:** Deployment-neutral local file adapter (`storage.py`); DB is source of truth.
 
 ### Backend modules (`backend/routes/`)
 auth, geo (Kingdom→Governorate→Directorate→School), books (+reader/reviews/approval),
@@ -22,7 +22,7 @@ Services run via supervisor (backend :8001, frontend :3000). Data auto-seeds on 
 
 ## Environment variables (backend/.env)
 See `.env.example`. Never commit real secrets.
-MONGO_URL, DB_NAME, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD, EMERGENT_LLM_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID.
+MONGO_URL, DB_NAME, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD, TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID.
 
 ## Roles & Permissions
 student, teacher, school_admin, directorate_admin, moderator, admin, super_admin — granular permissions enforced server-side via `require_permission`.
