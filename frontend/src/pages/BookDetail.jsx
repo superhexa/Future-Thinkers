@@ -24,8 +24,8 @@ function Reader({ book, onClose, onProgress, onComplete }) {
           <Button size="icon" variant="ghost" data-testid="reader-close-btn" onClick={onClose} className="text-white"><X className="w-5 h-5" /></Button>
         </div>
       </div>
-      <div className="min-h-0 flex-1 overflow-auto bg-slate-700 overscroll-contain">
-        <iframe title={book.title} src={book.pdf_url} className="block h-full min-h-[calc(100vh-8rem)] w-full border-0" scrolling="yes" />
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-slate-700 overscroll-contain" style={{ WebkitOverflowScrolling: "touch" }}>
+        <iframe title={book.title} src={book.pdf_url} className="block h-[calc(100vh-4.5rem)] min-h-[760px] w-full border-0" scrolling="yes" allow="fullscreen" />
       </div>
       <div className="h-2 bg-slate-800"><div className="h-full bg-emerald-500 transition-all" style={{ width: `${percent}%` }} /></div>
     </div>
